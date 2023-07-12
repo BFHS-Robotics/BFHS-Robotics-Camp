@@ -174,10 +174,10 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
 
 
             //Arm movement
-            if (gamepad2.dpad_up){
+            if (gamepad1.dpad_up){
                 armMove.setPower(-0.5);
             }
-            else if (gamepad2.dpad_down){
+            else if (gamepad1.dpad_down){
                 armMove.setPower(0.5);
             }
             else {
@@ -185,10 +185,10 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             }
 
             //Claw Grab
-            if (gamepad2.b) {
+            if (gamepad1.b) {
                 claw.setPosition(1.0);
             }
-            else if (gamepad2.a) {
+            else if (gamepad1.a) {
                 claw.setPosition(0);
             }
         }
