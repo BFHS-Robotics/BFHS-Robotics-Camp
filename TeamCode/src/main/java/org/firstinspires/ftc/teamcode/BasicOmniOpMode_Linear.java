@@ -161,10 +161,10 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             */
 
             // Send calculated power to wheels
-            leftFrontDrive.setPower(leftFrontPower);
-            rightFrontDrive.setPower(rightFrontPower);
-            leftBackDrive.setPower(leftBackPower);
-            rightBackDrive.setPower(rightBackPower);
+            leftFrontDrive.setPower(leftFrontPower/2);
+            rightFrontDrive.setPower(rightFrontPower/2);
+            leftBackDrive.setPower(leftBackPower/2);
+            rightBackDrive.setPower(rightBackPower/2);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
@@ -175,20 +175,20 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
 
             //Arm movement
             if (gamepad2.dpad_up){
-                armMove.setPower(0.5);
+                armMove.setPower(-0.5);
             }
             else if (gamepad2.dpad_down){
-                armMove.setPower(-0.5);
+                armMove.setPower(0.5);
             }
             else {
                 armMove.setPower(0);
             }
 
             //Claw Grab
-            if (gamepad2.a) {
+            if (gamepad2.b) {
                 claw.setPosition(1.0);
             }
-            else if (gamepad2.b) {
+            else if (gamepad2.a) {
                 claw.setPosition(0);
             }
         }
