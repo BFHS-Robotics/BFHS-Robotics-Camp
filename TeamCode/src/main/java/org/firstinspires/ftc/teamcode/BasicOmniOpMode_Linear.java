@@ -176,9 +176,9 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             telemetry.update();
 
             if (gamepad2.a){
-                arm.setPower(.1);
+                arm.setPower(.5);
             } else if (gamepad2.b){
-                arm.setPower(-.1);
+                arm.setPower(-.5);
             } else{
                 arm.setPower(0);
             }
