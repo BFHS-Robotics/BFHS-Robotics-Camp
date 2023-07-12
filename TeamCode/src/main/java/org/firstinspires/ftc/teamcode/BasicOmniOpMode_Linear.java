@@ -33,6 +33,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -63,7 +65,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear Opmode")
+@TeleOp(name="Team 2 Camp", group="Linear Opmode")
 
 public class BasicOmniOpMode_Linear extends LinearOpMode {
 
@@ -73,16 +75,24 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
+    private DcMotor arm = null;
+    private Servo claw = null;
+
 
     @Override
     public void runOpMode() {
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
-        leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "fl");
+        leftBackDrive  = hardwareMap.get(DcMotor.class, "bl");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "fr");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "br");
+        arm = hardwareMap.get(DcMotor.class, "arm_drive");
+        claw = hardwareMap.servo.get("servo");
+
+
+
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -98,6 +108,7 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        arm.setDirection(DcMotor.Direction.FORWARD);
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
@@ -163,5 +174,19 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.update();
+
+            if (gamepad2.a){
+                arm.setPower(.1);
+            } else if (gamepad2.b){
+                arm.setPower(-.1);
+            } else{
+                arm.setPower(0);
+            }
+
+            if (gamepad2.right_bumper){
+                claw.setPosition(1);
+            } else if (gamepad2.left_bumper){
+                claw.setPosition(0);
+            }
         }
     }}
