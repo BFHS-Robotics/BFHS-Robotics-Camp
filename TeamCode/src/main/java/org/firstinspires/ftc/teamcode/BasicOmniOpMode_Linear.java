@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -63,7 +64,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear Opmode")
+@TeleOp(name="Camp Team 3", group="Linear Opmode")
 
 public class BasicOmniOpMode_Linear extends LinearOpMode {
 
@@ -74,6 +75,12 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
 
+    private DcMotor arm = null;
+
+    private Servo claw = null;
+
+    private Servo support = null;
+
     @Override
     public void runOpMode() {
 
@@ -83,6 +90,9 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "bl");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "fr");
         rightBackDrive = hardwareMap.get(DcMotor.class, "br");
+        arm = hardwareMap.get(DcMotor.class, "arm");
+        claw = hardwareMap.servo.get("claw");
+        support = hardwareMap.servo.get("support");
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -110,7 +120,8 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         while (opModeIsActive()) {
             double max;
 
-            // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
+            // POV Mode uses left joystick to
+            // go forward & strafe, and right joystick to rotate.
             double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
@@ -158,7 +169,20 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
 
+            if(gamepad1.left_bumper){
+                claw.setPosition(0);
+            }else if(gamepad1.right_bumper){
+                claw.setPosition(1);
+            }
 
+            if(gamepad1.a){
+                support.setPosition(0);
+            }else if(gamepad1.b){
+                support.setPosition(1);
+            }
+
+            arm.setPower (gamepad1.left_trigger/2);
+            arm.setPower (gamepad1.right_trigger/-2);
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
